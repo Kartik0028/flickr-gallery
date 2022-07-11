@@ -5,14 +5,12 @@ const api_url =
 let currentSlide = null,
     currentPageNo,
     totalPageNo,
-    currentSliderPage,
     isSlideLeft = false,
     pageLoader = document.getElementById('loading');
 
 
 // Defining async function
 async function getapi(url, viewType, page) {
-    
     // Storing response
     const response = await fetch(url + '&' + new URLSearchParams({
         //per_page: page_items,
@@ -22,6 +20,12 @@ async function getapi(url, viewType, page) {
 
     // Storing data in form of JSON
     let data = await response.json();
+
+    // Set Pagination
+    currentPageNo = data.photos.page;
+    totalPageNo = data.photos.pages;
+
+    // Load View
     viewType === 'gridview' ? show(data.photos, data.photos.photo) : showslider(data.photos, data.photos.photo);
 }
 // Calling that async function
@@ -55,10 +59,6 @@ function show(data, photos) {
     document.getElementById("flickrphotogallery").innerHTML = image_ele;
     document.querySelector('.currentpage').innerHTML = data.page;
     document.querySelector('.totalpages').innerHTML = data.pages;
-
-    // Set Pagination
-    currentPageNo = data.page;
-    totalPageNo = data.pages;
 
     if (currentPageNo > 1 && currentPageNo < totalPageNo) {
         enablePrevBtn();
@@ -96,8 +96,8 @@ function downloadImg(url, fileName) {
 
 function openSlider(e, currentImage, page) {
     e.preventDefault();
-    getapi(api_url, 'gallery', page);
     currentSlide = currentImage;
+    getapi(api_url, 'gallery', page);
 }
 
 // slide grid button show hide
@@ -119,7 +119,6 @@ function hideSlideView() {
     slideview.classList.add('hide');
     button.classList.remove('hide');
     gridview.classList.remove('hide');
-    currentSlide = null;
 };
 function hideGridView() {
     gridview.classList.add('hide');
@@ -131,8 +130,6 @@ function hideGridView() {
 // img slider code start
 function showslider(data, photos) {
     let slider_ele = ``;
-    console.log("datapage :" , data.page);
-    currentPageNo = data.page;
     let imgNum = ((data.page - 1)*20) + 1;
     document.getElementById("slider").innerHTML = ``;
     photos.forEach(function (s, i) {
@@ -156,15 +153,11 @@ function showslider(data, photos) {
     document.getElementById("slider").innerHTML = slider_ele;
 
     // img slider initialize
-    currentSliderPage = data.page;
     let sliderImages = document.querySelectorAll(".slide");
-    console.log("currentSlide slideview click ", currentSlide);
     if(currentSlide !== null) {
-        console.log("not null");
         const activeSlide = document.getElementById('id_'+currentSlide);
         activeSlide.classList.add('active');
     } else {
-        console.log("yes null");
         let activeSlide = isSlideLeft ? 19 : 0;
         sliderImages[activeSlide].classList.add('active');
     }
@@ -173,35 +166,34 @@ function showslider(data, photos) {
 }
 
 function slideLeft() {
-    currentSlide = document.querySelector('.slide.active');
-    if(currentSlide.previousElementSibling !== null) {
-        console.log("prev not null ::: ", currentSlide);
-        currentSlide.classList.remove('active');
-        currentSlide.previousElementSibling.classList.add('active');
+    isSlideLeft = true;
+    currentSlide = document.querySelector('.slide.active').getAttribute('id').split('_')[1];
+    const activeSlide = document.getElementById('id_'+currentSlide);
+    if(activeSlide.previousElementSibling !== null) {
+        activeSlide.classList.remove('active');
+        activeSlide.previousElementSibling.classList.add('active');
+        currentSlide = parseInt(activeSlide.previousElementSibling.getAttribute('id').split('_')[1]);
     }
     else {
-        console.log("currentSliderPage : ", currentSliderPage - 1);
-        console.log("prev null ::: ", currentSlide);
         currentSlide = null;
-        isSlideLeft = true;
-        getapi(api_url, 'gallery', currentSliderPage - 1);
+        if(currentPageNo > 1)
+            getapi(api_url, 'gallery', currentPageNo-1);
     }
 }
 
 function slideRight() {
-    currentSlide = document.querySelector('.slide.active');
-    if(currentSlide.nextElementSibling !== null) {
-        console.log("next not null ::: ", currentSlide);
-        currentSlide.classList.remove('active');
-        currentSlide.nextElementSibling.classList.add('active');
+    isSlideLeft = false;
+    currentSlide = document.querySelector('.slide.active').getAttribute('id').split('_')[1];
+    const activeSlide = document.getElementById('id_'+currentSlide);
+    if(activeSlide.nextElementSibling !== null) {
+        activeSlide.classList.remove('active');
+        activeSlide.nextElementSibling.classList.add('active');
+        currentSlide = parseInt(activeSlide.nextElementSibling.getAttribute('id').split('_')[1]);
     }
     else {
-        console.log("currentSliderPage : ", currentSliderPage + 1);
-        console.log("next null ::: ", currentSlide);
         currentSlide = null;
-        isSlideLeft = false;
-        getapi(api_url, 'gallery', currentSliderPage + 1);
-        
+        if(currentPageNo < totalPageNo)
+            getapi(api_url, 'gallery', currentPageNo+1);
     }
 }
 
