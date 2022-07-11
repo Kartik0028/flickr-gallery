@@ -1,0 +1,49 @@
+@mixin breakpoint($point) {
+  @if $point == 'vxs' {
+    @media screen and (max-width: 380px) {
+       @content;
+    }
+  }
+
+  @if $point == 'xs' {
+    @media screen and (max-width: 768px) {
+       @content;
+    }
+  }
+
+  @else if $point == 'sm' {
+    @media screen and (max-width: 991px) {
+       @content;
+    }
+  }
+
+  @else if $point == 'xsUp' {
+    @media screen and (min-width: 769px) {
+       @content;
+    }
+  }
+
+  @else if $point == 'xsBelow' {
+    @media screen and (max-width: 767px) {
+       @content;
+    }
+  }
+
+  @else if $point == 'xsAndUp' {
+    @media screen and (min-width: 768px) {
+       @content;
+    }
+  }
+
+  @else if $point == 'md' {
+    @media screen and (max-width: 1199px) {
+       @content;
+    }
+  }
+
+  @else if $point == 'lg' {
+    @media screen and (min-width: 1200px) {
+       @content;
+    }
+  }
+}

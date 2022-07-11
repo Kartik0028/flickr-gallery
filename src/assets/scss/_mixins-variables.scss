@@ -1,0 +1,41 @@
+$white: #fff;
+$blackColor: #000;
+$bloodRed: #c12231;
+$yellowColor: #febc11;
+$btnRed : #bd231a;
+$dinNormal: 'DIN Next LT Pro Light', sans-serif;
+$dinItalic: 'DIN Next LT Pro Italic', sans-serif;
+$dinMedium: 'DIN Next LT Pro Medium', sans-serif;
+$dinBold: 'DIN Next LT Pro Bold', sans-serif;
+$dinBoldItalic: 'DIN Next LT Pro BoldItalic', sans-serif;
+$xs : 767px;
+$sm : 768px;
+
+@mixin respond-to($val, $val2: none) {
+    @if ($val2 == none) {
+        @media (min-width: $val) { @content; }
+
+    }
+
+    @else if ($val2 == max) {
+        @media (max-width: $val) { @content; }
+
+    }
+
+    @else {
+        @media (min-width: $val) and (max-width: $val2) { @content; }
+    }
+}
+
+@mixin vendor-prefixes($property, $value) {
+    @each $prop in "-webkit-", "-moz-", "-ms-", "-o-", "" {
+        #{$prop}#{$property}: $value;
+    }
+}
+
+@mixin ie9-plus() {
+    @media screen and (min-width:0\0) and (min-resolution: +72dpi) {
+      // IE9+ CSS
+      @content;
+    }
+}

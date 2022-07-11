@@ -1,0 +1,43 @@
+<section class="gallery-wrapper">
+    <div class="loader" id="loading">
+        <div class="d-flex justify-content-center align-items-center loader-container">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    
+	<div class="view-btn-cnt">
+        <div class="btnbox">
+            <a id="slidebtn" class="slideviewbtn" href="javascript:;"><span>View Slideshow</span></a>
+            <a id="gridbtn" class="gridviewbtn hide" href="javascript:;"><span>View Grid</span></a>
+        </div>
+    </div>
+
+	<div class="grid-view-cnt">
+        <ul id="flickrphotogallery" class="photo-list-cnt"></ul>
+        <div class="detail-cnt">
+            <div class="page-dtl-cnt">
+                <p>showing page <span class="currentpage"></span> of <span class="totalpages"></span></p>
+                <div class="gotopage-cnt">
+                    Go to page <input type="number" name="pagination" id="pagination" max="3" min="1">
+                    <button type="submit" class="gotobtn" id="gotobtn" onclick="getInputValue();">Go</button>
+                </div>
+            </div>
+            <div class="grid-btn-cnt">
+                <button id="prevPage" onclick="prevPage();" class="prevpage"><span>Prev Page</span></button>
+                <button id="nextPage" onclick="nextPage();" class="nextpage"><span>Next Page</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-view-cnt hide">
+        <div class="wrap">
+            <div id="arrow-left" class="arrow" onclick="slideLeft()"></div>
+            
+            <div id="slider"></div>
+
+            <div id="arrow-right" class="arrow" onclick="slideRight()"></div>
+        </div>
+    </div>
+</section>
