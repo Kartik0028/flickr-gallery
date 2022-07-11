@@ -10,8 +10,10 @@ var gulp = require('gulp');
 var handlebars = require('gulp-compile-handlebars');
 var rename = require('gulp-rename');
 
+
+
 //Copy all HTML to dist
-gulp.task('copyHTML',function () {
+gulp.task('build',function () {
   gulp.src('src/*.html')
   .pipe(gulp.dest('dist'));
 });
@@ -51,7 +53,7 @@ gulp.task('copyFonts',function() {
   .pipe(gulp.dest('dist/assets/fonts/'));
 });
 
-gulp.task('default', ['copyHTML', 'hbs', 'imagemin', 'minifyJS', 'sass', 'copyVendor', 'copyFonts','serve','watch']);
+gulp.task('default', ['build', 'hbs', 'imagemin', 'minifyJS', 'sass', 'copyVendor', 'copyFonts','serve','watch']);
 
 // Static Server + watching scss/html files
 gulp.task('serve', function() {
